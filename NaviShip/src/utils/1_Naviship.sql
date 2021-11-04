@@ -1,0 +1,2 @@
+CREATE SCHEMA NaviShip;
+USE NaviShip;
