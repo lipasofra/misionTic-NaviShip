@@ -5,25 +5,21 @@
  */
 package model;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import utils.connection;
-
 /**
  *
  * @author lipas
  */
-public class de_velaModel extends barcoModel{
+public class DeVelaModel extends BarcoModel{
     
-   private String modelo;
+    private String modelo;
     private int cantidadVelas;
     private int capacidad;
     private String tipo;
-    
     private String propietarioNombre;
+
     
     //constructor para el manejo interno de la tabla
-    public de_velaModel(String registro, Integer propietario, String modelo, int cantidadVelas, String tipo, int capacidad){
+    public DeVelaModel(String registro, Long propietario, String modelo, int cantidadVelas, String tipo, int capacidad){
         super(registro, propietario);
         this.modelo=modelo;
         this.cantidadVelas=cantidadVelas;
@@ -34,15 +30,16 @@ public class de_velaModel extends barcoModel{
     //POLIMORFISMO Y SOBRECARGA DE METODOS
     //constructor con el fin de mostrar la DB - ya que si manejamos todo con JOIN en los queries puede comer mucha memoria si las tablas unidas tienen muchos datos.
     //ejemplo: crear un constructor con llave foranea para manejo interno, y otro con los datos que queremos mostrar de la tabla que tiene la llave foranea
-    public de_velaModel(String registro, Integer propietario, String modelo, int cantidadVelas, String tipo, int capacidad, String propietarioNombre){
-        super(registro, propietario);
+    public DeVelaModel(String registro, String modelo, int cantidadVelas, String tipo, int capacidad, String propietarioNombre){
+        super(registro);
         this.modelo=modelo;
         this.cantidadVelas=cantidadVelas;
         this.tipo=tipo;
         this.capacidad=capacidad;
         this.propietarioNombre=propietarioNombre;
     }
-
+    
+    
     /**
      * @return the modelo
      */
@@ -105,4 +102,19 @@ public class de_velaModel extends barcoModel{
     public String getPropietarioNombre() {
         return propietarioNombre;
     }
+
+    /**
+     * @param propietarioNombre the propietarioNombre to set
+     */
+    public void setPropietarioNombre(String propietarioNombre) {
+        this.propietarioNombre = propietarioNombre;
+    }
+
+  public Object[] toArray() {
+    Object[] data = {registro, modelo, cantidadVelas, capacidad, tipo, propietarioNombre};
+    return data;
+  }
+
+   
+    
 }

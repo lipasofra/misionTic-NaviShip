@@ -11,52 +11,59 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.json.simple.*;
+import org.json.simple.parser.*;
+
 /**
  *
- * @author lipas
+ * @author lipasofra y camilo
  */
 public class connection {
-    
-    public static Connection getConnection() throws IOException, ParseException {
-        
-        JSONParser parser = new JSONParser();
-        Connection conn = null;
-                
-        /*String dbURL ="jdbc:mysql://localhost:3306/naviship";
-        String username = "root";
-        String password = "3171609";*/
-            
-         try {
-             String credentials_path= System.getProperty("user.dir")+ "/src/utils/db_credentials.json";
-             JSONObject jsonObject= (JSONObject)parser.parse(new FileReader(credentials_path));
-             
-             String host= (String)jsonObject.get("db_ip");
-             String port= (String)jsonObject.get("db_port");
-             String username= (String)jsonObject.get("db_user");
-             String password= (String)jsonObject.get("db_password");
-             String schema_name= "naviship";
-             String dbURL="jdbc:mysql://"+host+":"+port+"/"+schema_name;
-             //String dbURL ="jdbc:mysql://localhost:3306/naviship";
-               
-             conn = DriverManager.getConnection (dbURL, username, password);
-             if ( conn != null ) 
-                 System.out.println("Conectado");
-                 
-         }catch( SQLException | FileNotFoundException ex ) {
-             System.out.println("Error conexión BD1");
-            ex.printStackTrace();
-            }catch( IOException | ParseException ex ) {
-             System.out.println("Error conexión BD2");
-            ex.printStackTrace();
-            }
-        return conn;
-    }
-    
-    public static void main(String[] args) throws IOException, ParseException {
-        getConnection();
-    }
-}
 
+  /**
+   *
+   * @return
+   */
+  public static Connection getConnection() {
+
+    JSONParser parser = new JSONParser();
+    Connection conn = null;
+    // conectar
+    try {
+      String credentials_path = System.getProperty("user.dir") + "/src/utils/db_credentials.json";
+      JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(credentials_path));
+
+      String host = (String) jsonObject.get("dp_ip");
+      String port = (String) jsonObject.get("dp_port");
+      String username = (String) jsonObject.get("db_user");
+      String password = (String) jsonObject.get("db_password");
+      String schemaName = "naviship";
+      String dbURL = "jdbc:mysql://" + host + ":" + port + "/" + schemaName;
+
+      conn = DriverManager.getConnection(dbURL, username, password);
+
+      if (conn != null) {
+        System.out.println("Conectado");
+      }
+
+    } catch (SQLException | FileNotFoundException ex) {
+      ex.printStackTrace();
+      System.out.println("Error conexion BD");
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    } catch (org.json.simple.parser.ParseException ex) {
+      Logger.getLogger(connection.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    return conn;
+  }
+
+  public static void main(String[] args) {
+    getConnection();
+  }
+
+}
